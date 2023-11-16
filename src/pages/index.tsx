@@ -1,7 +1,5 @@
-export default function HomePage() {
-  return (
-    <div>
-      <p>Home</p>
-    </div>
-  );
+import { UserList } from "@/features/user/components";
+
+export default function UserListPage() {
+  return <UserList />;
 }

@@ -1,79 +1,74 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import {
-  LaptopOutlined,
-  NotificationOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Layout, Menu, Row, theme } from "antd";
-import Link from "next/link";
+import { Avatar, Button, Flex, Layout, theme } from "antd";
+import Route from "./route/Route";
+import tebenganDashboardLogo from "../../public/tebengan-dashboard-logo.png";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import routeItems from "./route";
 
 const { Header, Content, Sider } = Layout;
 
-const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
-const items2 = [UserOutlined].map((val, index) => {
-  const key = String(index + 1);
-
-  return (
-    <>
-      <Row>
-        <Link href="/">
-          <p>Home</p>
-        </Link>
-      </Row>
-      <Row>
-        <Link href="/about-us">
-          <p>About Us</p>
-        </Link>
-      </Row>
-    </>
-  );
-  // key: `sub${key}`,
-  // icon: React.createElement(icon),
-  // label: `subnav ${key}`,
-
-  // children: new Array(4).fill(null).map((_, j) => {
-  //   const subKey = index * 4 + j + 1;
-  //   return {
-  //     key: subKey,
-  //     label: `option${subKey}`,
-  //   };
-  // }),
-});
-
-export const TebenganShell: React.FC<PropsWithChildren> = ({ children }) => {
+const TebenganShell: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const { pathname } = useRouter();
+  const isActiveRoute = routeItems.find(
+    (routeItem) => pathname.split("/")[1] === routeItem.linkTo.split("/")[1]
+  );
+
+  const [collapsed, setCollapsed] = useState(true);
+
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
     <Layout style={{ height: "100vh" }}>
-      <Header style={{ display: "flex", alignItems: "center" }}>
-        <div className="demo-logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={items1}
-        />
+      <Header
+        style={{
+          display: "flex",
+          backgroundColor: "#1E8AF5",
+          justifyContent: "space-between",
+        }}
+      >
+        <Flex gap={100}>
+          <Image
+            src={tebenganDashboardLogo}
+            alt="image"
+            width={160}
+            style={{ marginTop: 4 }}
+          />
+          <p style={{ fontWeight: "bold", color: "white" }}>
+            {isActiveRoute?.title}
+          </p>
+        </Flex>
+        <Flex align="center">
+          <p style={{ color: "white", marginRight: 16 }}>Wibi Hanif Wibowo</p>
+          <Avatar size={40} icon={<UserOutlined />} />
+        </Flex>
       </Header>
       <Layout>
         <Sider width={200} style={{ background: colorBgContainer }}>
-          {/* <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
-            items={items2}
-          /> */}
-          {items2}
-          <Row>
-            <p>{}</p>
-          </Row>
+          <div style={{ paddingInline: 10, marginTop: 5 }}>
+            <Button
+              type="text"
+              onClick={toggleCollapsed}
+              style={{ fontSize: "15px" }}
+            >
+              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </Button>
+          </div>
+          <div className="logo" />
+          {collapsed && isActiveRoute ? (
+            <Route isActiveRoute={isActiveRoute} collapsed={collapsed} />
+          ) : null}
         </Sider>
         <Layout style={{ padding: "24px 24px 24px" }}>
           <Content

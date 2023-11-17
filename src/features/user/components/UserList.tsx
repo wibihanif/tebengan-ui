@@ -1,6 +1,12 @@
 import React from "react";
 import { HeaderSection } from "./HeaderSection";
+import { UserListTable } from "./table/UserListTable";
 
 export const UserList: React.FC = () => {
-  return <HeaderSection />;
+  return (
+    <div>
+      <HeaderSection />
+      <UserListTable />
+    </div>
+  );
 };

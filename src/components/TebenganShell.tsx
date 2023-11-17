@@ -70,7 +70,7 @@ const TebenganShell: React.FC<PropsWithChildren> = ({ children }) => {
             <Route isActiveRoute={isActiveRoute} collapsed={collapsed} />
           ) : null}
         </Sider>
-        <Layout style={{ padding: "24px 24px 24px" }}>
+        <Layout style={{ padding: "24px 24px 24px", height: "130vh" }}>
           <Content
             style={{
               padding: 24,
